@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jesus Lopez — Sr. Product Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #fafaf8;
+    --surface: #f2f1ee;
+    --border: #e0ddd7;
+    --accent: #c0392b;
+    --accent2: #2c6e8a;
+    --text: #1a1a1a;
+    --muted: #888880;
+    --card: #ffffff;
+    --game-bg: #1a1a2e;
+    --game-ground: #e8e0d0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    padding: 1.25rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  nav.scrolled { background: rgba(250,250,248,0.95); box-shadow: 0 1px 0 var(--border); backdrop-filter: blur(8px); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text); text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── GAME HERO ── */
+  #game-hero {
+    background: var(--game-bg);
+    padding: 5rem 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .game-intro {
+    text-align: center;
+    padding: 2rem 1rem 1.5rem;
+    color: #fff;
+  }
+  .game-intro h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 0.4rem;
+  }
+  .game-intro h1 em { font-style: italic; color: #f0a500; }
+  .game-intro p { font-size: 0.88rem; color: rgba(255,255,255,0.5); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; }
+
+  #game-canvas-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+  #gameCanvas {
+    display: block;
+    width: 100%;
+    height: 160px;
+    background: transparent;
+  }
+  #game-instructions {
+    text-align: center;
+    padding: 0.6rem 1rem 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+  .scroll-hint {
+    text-align: center;
+    padding: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-bottom: 1.5rem;
+  }
+  .scroll-hint::before, .scroll-hint::after { content: ''; display: block; height: 1px; width: 3rem; background: rgba(255,255,255,0.15); }
+
+  /* ── PORTFOLIO SECTION ── */
+  .portfolio-wrap { background: var(--bg); }
+
+  section {
+    padding: 6rem 4rem;
+    max-width: 1160px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::after { content: ''; display: block; height: 1px; width: 2.5rem; background: var(--accent); opacity: 0.35; }
+  h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 700; margin-bottom: 3rem; line-height: 1.15; color: var(--text); }
+
+  /* ── ABOUT BAND ── */
+  .about-band {
+    background: var(--text);
+    padding: 5rem 4rem;
+  }
+  .about-inner {
+    max-width: 1160px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .about-left h2 { color: #fff; margin-bottom: 1rem; }
+  .about-left p { color: rgba(255,255,255,0.55); font-size: 1rem; line-height: 1.75; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); }
+  .stat-box { background: rgba(255,255,255,0.04); padding: 1.75rem 2rem; text-align: center; transition: background 0.2s; }
+  .stat-box:hover { background: rgba(255,255,255,0.08); }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: #f0a500; display: block; line-height: 1; margin-bottom: 0.35rem; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* ── EXPERIENCE ── */
+  .timeline { position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--border); }
+  .job { padding-left: 2.5rem; margin-bottom: 3.5rem; position: relative; opacity: 0; transform: translateY(18px); transition: opacity 0.55s, transform 0.55s; }
+  .job.visible { opacity: 1; transform: none; }
+  .job::before { content: ''; position: absolute; left: -4px; top: 0.5rem; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+  .job-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.3rem; }
+  .job-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; }
+  .job-date { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); padding-top: 0.3rem; }
+  .job-company { font-size: 0.82rem; color: var(--accent2); font-weight: 500; margin-bottom: 0.9rem; letter-spacing: 0.03em; }
+  .job ul { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+  .job li { font-size: 0.9rem; color: var(--muted); padding-left: 1.2rem; position: relative; line-height: 1.6; }
+  .job li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.78rem; }
+  .job li strong { color: var(--text); font-weight: 500; }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--surface); max-width: 100%; padding: 6rem 4rem; }
+  .skills-inner { max-width: 1160px; margin: 0 auto; }
+  .skills-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+  .skill-card { border: 1px solid var(--border); padding: 1.6rem; background: var(--card); transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; opacity: 0; transform: translateY(18px); }
+  .skill-card.visible { opacity: 1; transform: none; }
+  .skill-card:hover { border-color: var(--accent2); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+  .skill-icon { font-size: 1.4rem; margin-bottom: 0.6rem; }
+  .skill-cat { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .skill-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 0.7rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.05em; padding: 0.28rem 0.6rem; border: 1px solid var(--border); color: var(--muted); border-radius: 2px; background: var(--surface); }
+
+  /* ── ACHIEVEMENTS ── */
+  .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .ach-item { background: var(--card); padding: 2.25rem 1.75rem; transition: background 0.2s; opacity: 0; transform: scale(0.97); }
+  .ach-item.visible { opacity: 1; transform: scale(1); transition: opacity 0.5s, transform 0.5s, background 0.2s; }
+  .ach-item:hover { background: var(--surface); }
+  .ach-num { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 0.45rem; }
+  .ach-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── EDUCATION ── */
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .edu-card { border: 1px solid var(--border); padding: 1.6rem; background: var(--card); }
+  .edu-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.4rem; }
+  .edu-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 0.25rem; }
+  .edu-card p { font-size: 0.85rem; color: var(--muted); }
+  .lang-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.9rem; }
+  .lang-chip { font-family: 'DM Mono', monospace; font-size: 0.68rem; padding: 0.35rem 0.9rem; border: 1px solid var(--accent2); color: var(--accent2); border-radius: 2px; }
+
+  /* ── CONTACT ── */
+  #contact { text-align: center; background: var(--text); max-width: 100%; padding: 7rem 2rem; }
+  #contact h2 { color: #fff; }
+  #contact .section-label { justify-content: center; color: #f0a500; }
+  #contact .section-label::after { background: #f0a500; }
+  .contact-email { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #f0a500; text-decoration: none; border-bottom: 1px solid #f0a500; padding-bottom: 2px; transition: opacity 0.2s; display: inline-block; margin-bottom: 1.5rem; }
+  .contact-email:hover { opacity: 0.7; }
+  .contact-meta { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
+  .btn { padding: 0.8rem 2rem; border-radius: 2px; font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; display: inline-block; }
+  .btn-outline-light { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); }
+  .btn-outline-light:hover { border-color: #f0a500; color: #f0a500; }
+
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid var(--border); padding: 1.75rem 4rem; display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+  footer p { font-family: 'DM Mono', monospace; font-size: 0.63rem; letter-spacing: 0.1em; color: var(--muted); }
+  .footer-dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; }
+
+  @media (max-width: 860px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    #skills { padding: 4rem 1.5rem; }
+    .about-band { padding: 4rem 1.5rem; }
+    .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .edu-grid { grid-template-columns: 1fr; }
+    footer { padding: 1.25rem 1.5rem; }
+    #contact { padding: 5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Jesus Lopez</a>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#achievements">Impact</a></li>
+    <li><a href="#education">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- GAME HERO -->
+<div id="game-hero">
+  <div class="game-intro">
+    <h1>Jesus Lopez &mdash; <em>Sr. Product Manager</em></h1>
+    <p>10 years · AI · SaaS · Cloud · $1B+ Revenue Led</p>
+  </div>
+  <div id="game-canvas-wrap">
+    <canvas id="gameCanvas" width="860" height="160"></canvas>
+  </div>
+  <div id="game-instructions">Press Space / Tap to jump &nbsp;·&nbsp; Dodge the PM blockers</div>
+  <div class="scroll-hint">Scroll down to explore the portfolio</div>
+</div>
+
+<!-- PORTFOLIO -->
+<div class="portfolio-wrap">
+
+  <!-- ABOUT BAND -->
+  <div class="about-band">
+    <div class="about-inner">
+      <div class="about-left">
+        <p class="section-label" style="color:#f0a500">Profile</p>
+        <h2>Data-driven PM<br><em style="font-style:italic">building at scale</em></h2>
+        <p>10 years delivering AI, SaaS, and cloud product portfolios — from zero-to-one launches to multi-million-dollar platforms. I turn ambiguous problems into shipped products and measurable growth.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><span class="stat-num">10+</span><span class="stat-label">Years PM</span></div>
+        <div class="stat-box"><span class="stat-num">$1B+</span><span class="stat-label">Revenue Led</span></div>
+        <div class="stat-box"><span class="stat-num">28%</span><span class="stat-label">Faster TTM</span></div>
+        <div class="stat-box"><span class="stat-num">4</span><span class="stat-label">Languages</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label">Career</p>
+    <h2>Work Experience</h2>
+    <div class="timeline">
+      <div class="job">
+        <div class="job-header"><span class="job-title">Senior Product Manager</span><span class="job-date">Oct 2025 – Present</span></div>
+        <div class="job-company">F5 Networks · Seattle, WA</div>
+        <ul>
+          <li>Own AI Product Development for F5 Commercial Models, leading a team of PMs — <strong>cutting time to market by 28% and ~$1M in costs</strong>.</li>
+          <li>Led CrowdStrike CyberSecurity Partnership and EDR Commercialization Model targeting a <strong>$200M ARR opportunity</strong>.</li>
+          <li>Owning product development, pricing, and commercialization for the new Application Delivery and Security Platform (ADSP), targeting a multibillion-dollar market.</li>
+          <li>Defined AI Guardrails product requirements for the F5 ecosystem — targeting the AI cybersecurity market with a <strong>300% y/y CAGR</strong>.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="job-header"><span class="job-title">Senior Product Manager</span><span class="job-date">Feb 2022 – Oct 2025</span></div>
+        <div class="job-company">HP Inc · Seattle, WA</div>
+        <ul>
+          <li>Directed an AI-driven brand protection product from feedback to MVP — <strong>delivering $5M ARR</strong>.</li>
+          <li>Managed full product lifecycle, achieving <strong>20%+ improvement in global margins</strong>.</li>
+          <li>GTM strategy that drove a <strong>20% increase in customer acquisition and 15% revenue growth</strong> within 12 months.</li>
+          <li>Reduced time to market by <strong>15%</strong> and accelerated sales closures by <strong>25%</strong> via cross-functional training.</li>
+          <li>Competitive analysis contributing an additional <strong>$10M in annual revenue</strong>.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="job-header"><span class="job-title">Software PM — PrintOS (SaaS)</span><span class="job-date">Jul 2017 – Feb 2022</span></div>
+        <div class="job-company">HP Inc · Atlanta, GA</div>
+        <ul>
+          <li>Designed and launched PrintOS, a SaaS cloud service for Large Format printing — <strong>$50M ARR in year one</strong>.</li>
+          <li>Established full product roadmap using customer insights and A/B testing.</li>
+          <li>Introduced service tools improving <strong>NPS by 42%</strong> for Print and Cut / Latex 3X5.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="job-header"><span class="job-title">Customer Quality & Assurance Engineer</span><span class="job-date">Jul 2015 – Jul 2017</span></div>
+        <div class="job-company">HP Inc</div>
+        <ul>
+          <li>Led Data Analytics team implementing a cloud support service, reducing downtime by <strong>15%</strong>.</li>
+          <li>Coordinated Early Bird adoption program across <strong>15+ global installations</strong>.</li>
+        </ul>
+      </div>
+      <div class="job">
+        <div class="job-header"><span class="job-title">Co-Founder & Head of Product</span><span class="job-date">Jan 2017 – Nov 2017</span></div>
+        <div class="job-company">AppVenture · Barcelona, Spain</div>
+        <ul>
+          <li>Launched an AI/ML startup for the tourism industry; secured <strong>$100K seed via Technova Accelerator</strong>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <div id="skills">
+    <div class="skills-inner">
+      <p class="section-label">Expertise</p>
+      <h2>Skills & Tools</h2>
+      <div class="skills-wrapper">
+        <div class="skill-card">
+          <div class="skill-icon">🗺️</div>
+          <div class="skill-cat">Core</div>
+          <h3>Product Management</h3>
+          <div class="skill-tags"><span class="tag">Roadmapping</span><span class="tag">Lifecycle Mgmt</span><span class="tag">MVP Definition</span><span class="tag">GTM Strategy</span><span class="tag">End-to-End Delivery</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">☁️</div>
+          <div class="skill-cat">Technical</div>
+          <h3>AI & Cloud</h3>
+          <div class="skill-tags"><span class="tag">AI/ML</span><span class="tag">AWS</span><span class="tag">Cloud Computing</span><span class="tag">Big Data</span><span class="tag">Python</span><span class="tag">C++</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">📈</div>
+          <div class="skill-cat">Strategy</div>
+          <h3>Business & Growth</h3>
+          <div class="skill-tags"><span class="tag">Market Research</span><span class="tag">KPIs & OKRs</span><span class="tag">Forecasting</span><span class="tag">Competitive Analysis</span><span class="tag">Pricing</span></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🛠️</div>
+          <div class="skill-cat">Tools</div>
+          <h3>Platforms</h3>
+          <div class="skill-tags"><span class="tag">Jira</span><span class="tag">Power BI</span><span class="tag">Smartsheet</span><span class="tag">Gemini</span><span class="tag">Claude</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <p class="section-label">Impact</p>
+    <h2>Key Achievements</h2>
+    <div class="achievements-grid">
+      <div class="ach-item"><div class="ach-num">$1B+</div><div class="ach-desc">Cumulative revenue across product portfolios throughout career</div></div>
+      <div class="ach-item"><div class="ach-num">$50M</div><div class="ach-desc">ARR delivered by PrintOS in its first year as a SaaS launch</div></div>
+      <div class="ach-item"><div class="ach-num">42%</div><div class="ach-desc">NPS improvement from service tools for Large Format printing</div></div>
+      <div class="ach-item"><div class="ach-num">28%</div><div class="ach-desc">Reduction in time to market via AI product development at F5</div></div>
+      <div class="ach-item"><div class="ach-num">$200M</div><div class="ach-desc">ARR opportunity via CrowdStrike cybersecurity partnership</div></div>
+      <div class="ach-item"><div class="ach-num">25%</div><div class="ach-desc">Faster sales closures through cross-functional training programs</div></div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" style="background:var(--surface); max-width:100%; padding:6rem 4rem;">
+    <div style="max-width:1160px;margin:0 auto;">
+      <p class="section-label">Background</p>
+      <h2>Education & More</h2>
+      <div class="edu-grid">
+        <div class="edu-card"><div class="edu-label">Master's Degree</div><h3>Project Management</h3><p>University of La Salle</p></div>
+        <div class="edu-card"><div class="edu-label">Bachelor's + Master's</div><h3>Energy / Nuclear Technology Engineering</h3><p>UDC – EPS</p></div>
+        <div class="edu-card"><div class="edu-label">Scientific Publication</div><h3>Applied Surface Science Journal</h3><p>Characterization of hard coatings via LIBS technique · doi: 10.1016/j.appsusc.2015.01.037</p></div>
+        <div class="edu-card"><div class="edu-label">Languages</div><h3>Multilingual</h3><p>Fluent across four languages — an asset in global roles.</p><div class="lang-chips"><span class="lang-chip">English</span><span class="lang-chip">Spanish</span><span class="lang-chip">Galician</span><span class="lang-chip">Portuguese</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div id="contact">
+    <p class="section-label">Contact</p>
+    <h2>Let's build something<br><em style="font-style:italic;color:#f0a500">great together</em></h2>
+    <p class="contact-meta" style="margin-top:1rem;">Seattle, WA &nbsp;·&nbsp; Green Card Holder &nbsp;·&nbsp; Open to Opportunities</p>
+    <br/>
+    <a href="mailto:j.alberto.varela@icloud.com" class="contact-email">j.alberto.varela@icloud.com</a>
+    <br/>
+    <a href="tel:+14694569991" class="btn btn-outline-light">+1 (469) 456-9991</a>
+  </div>
+
+</div><!-- end portfolio-wrap -->
+
+<footer>
+  <p>© 2026 Jesus Lopez — Sr. Product Manager</p>
+  <div class="footer-dot"></div>
+  <p>Seattle, WA</p>
+</footer>
+
+<script>
+// ── NAV SCROLL ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+// ── INTERSECTION OBSERVER ──
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.job, .skill-card, .ach-item').forEach(el => obs.observe(el));
+
+// ── PM RUNNER GAME ──
+(function() {
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = 860, H = 160;
+  canvas.width = W; canvas.height = H;
+
+  const GROUND = H - 30;
+  const GRAVITY = 0.55;
+  const JUMP_FORCE = -11;
+
+  const PM_OBSTACLES = [
+    { label: '🔄 Scope\nCreep', color: '#e74c3c' },
+    { label: '📊 Endless\nMeetings', color: '#e67e22' },
+    { label: '🚧 Tech\nDebt', color: '#8e44ad' },
+    { label: '❓ Unclear\nRequirements', color: '#2980b9' },
+    { label: '💸 Budget\nCuts', color: '#c0392b' },
+    { label: '📅 Missed\nDeadlines', color: '#16a085' },
+    { label: '🔀 Priority\nShift', color: '#d35400' },
+    { label: '👥 Stakeholder\nWars', color: '#7f8c8d' },
+  ];
+
+  let state = 'idle'; // idle, running, dead
+  let score = 0, hiScore = 0, frame = 0, speed = 3.2;
+
+  // Player (little rocket/PM icon)
+  let player = { x: 80, y: GROUND, vy: 0, w: 28, h: 34, jumping: false };
+
+  // Obstacles
+  let obstacles = [];
+  let nextObstacle = 90;
+
+  // Stars
+  let stars = Array.from({length: 40}, () => ({
+    x: Math.random() * W,
+    y: Math.random() * (GROUND - 20),
+    r: Math.random() * 1.4 + 0.3,
+    a: Math.random()
+  }));
+
+  function reset() {
+    player.y = GROUND; player.vy = 0; player.jumping = false;
+    obstacles = []; nextObstacle = 90; score = 0; frame = 0; speed = 3.2;
+    state = 'running';
+  }
+
+  function jump() {
+    if (state === 'idle' || state === 'dead') { reset(); return; }
+    if (!player.jumping) {
+      player.vy = JUMP_FORCE;
+      player.jumping = true;
+    }
+  }
+
+  // Input
+  document.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); jump(); } });
+  canvas.addEventListener('click', jump);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); jump(); }, { passive: false });
+
+  function spawnObstacle() {
+    const tmpl = PM_OBSTACLES[Math.floor(Math.random() * PM_OBSTACLES.length)];
+    const h = 36 + Math.random() * 20;
+    obstacles.push({
+      x: W + 20,
+      y: GROUND - h + 28,
+      w: 52, h,
+      label: tmpl.label,
+      color: tmpl.color,
+    });
+    nextObstacle = 80 + Math.random() * 90;
+  }
+
+  function drawPlayer() {
+    const px = player.x, py = player.y;
+    // Body
+    ctx.fillStyle = '#2c6e8a';
+    ctx.beginPath();
+    ctx.roundRect(px - 10, py - player.h + 6, 20, player.h - 6, 4);
+    ctx.fill();
+    // Head
+    ctx.fillStyle = '#f5cba7';
+    ctx.beginPath();
+    ctx.arc(px, py - player.h + 4, 9, 0, Math.PI * 2);
+    ctx.fill();
+    // Laptop
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(px - 8, py - 14, 16, 10);
+    ctx.fillStyle = '#4af0c8';
+    ctx.fillRect(px - 6, py - 12, 12, 7);
+    // Legs
+    const legOff = state === 'running' ? Math.sin(frame * 0.25) * 5 : 0;
+    ctx.fillStyle = '#1a5276';
+    ctx.fillRect(px - 7, py - 8, 5, 10 + legOff);
+    ctx.fillRect(px + 2, py - 8, 5, 10 - legOff);
+  }
+
+  function drawObstacle(ob) {
+    // Block body
+    ctx.fillStyle = ob.color;
+    ctx.beginPath();
+    ctx.roundRect(ob.x, ob.y, ob.w, ob.h, 5);
+    ctx.fill();
+    // Slight shine
+    ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    ctx.beginPath();
+    ctx.roundRect(ob.x + 3, ob.y + 3, ob.w - 6, 8, 3);
+    ctx.fill();
+    // Label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    const lines = ob.label.split('\n');
+    lines.forEach((line, i) => {
+      ctx.fillText(line, ob.x + ob.w / 2, ob.y + 16 + i * 12);
+    });
+  }
+
+  function drawGround() {
+    // Ground line
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, GROUND + 28); ctx.lineTo(W, GROUND + 28);
+    ctx.stroke();
+    // Dashes
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([12, 18]);
+    ctx.beginPath();
+    ctx.moveTo(0, GROUND + 28); ctx.lineTo(W, GROUND + 28);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function drawStars() {
+    stars.forEach(s => {
+      s.a += 0.005;
+      ctx.globalAlpha = 0.3 + 0.3 * Math.abs(Math.sin(s.a));
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function drawHUD() {
+    ctx.font = '500 11px DM Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.fillText('SCORE', 16, 22);
+    ctx.fillStyle = '#f0a500';
+    ctx.font = 'bold 15px DM Mono, monospace';
+    ctx.fillText(Math.floor(score), 16, 40);
+
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '500 11px DM Mono, monospace';
+    ctx.fillText('BEST', W - 16, 22);
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.font = 'bold 15px DM Mono, monospace';
+    ctx.fillText(Math.floor(hiScore), W - 16, 40);
+  }
+
+  function drawIdle() {
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.font = 'bold 15px Playfair Display, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Press Space or Tap to Start', W / 2, H / 2 - 8);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '11px DM Mono, monospace';
+    ctx.fillText('Dodge the PM blockers!', W / 2, H / 2 + 12);
+  }
+
+  function drawDead() {
+    ctx.fillStyle = 'rgba(192,57,43,0.8)';
+    ctx.font = 'bold 16px Playfair Display, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Blocked by a PM problem!', W / 2, H / 2 - 10);
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    ctx.font = '11px DM Mono, monospace';
+    ctx.fillText('Press Space or Tap to try again', W / 2, H / 2 + 12);
+  }
+
+  function checkCollision(ob) {
+    const px = player.x, py = player.y;
+    const ph = player.h, pw = player.w;
+    return (
+      px + pw * 0.35 > ob.x + 4 &&
+      px - pw * 0.35 < ob.x + ob.w - 4 &&
+      py - ph + 8 < ob.y + ob.h &&
+      py > ob.y
+    );
+  }
+
+  function loop() {
+    requestAnimationFrame(loop);
+    ctx.clearRect(0, 0, W, H);
+
+    drawStars();
+    drawGround();
+
+    if (state === 'running') {
+      frame++;
+      score += 0.08;
+      if (score > hiScore) hiScore = score;
+      speed = 3.2 + score * 0.003;
+
+      // Player physics
+      player.vy += GRAVITY;
+      player.y += player.vy;
+      if (player.y >= GROUND) { player.y = GROUND; player.vy = 0; player.jumping = false; }
+
+      // Obstacles
+      nextObstacle--;
+      if (nextObstacle <= 0) spawnObstacle();
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        obstacles[i].x -= speed;
+        if (obstacles[i].x + obstacles[i].w < 0) obstacles.splice(i, 1);
+        else if (checkCollision(obstacles[i])) { state = 'dead'; break; }
+      }
+    }
+
+    obstacles.forEach(drawObstacle);
+    drawPlayer();
+    drawHUD();
+
+    if (state === 'idle') drawIdle();
+    if (state === 'dead') drawDead();
+  }
+
+  loop();
+})();
+</script>
+</body>
+</html>
