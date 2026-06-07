@@ -185,30 +185,6 @@
   .lang-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.9rem; }
   .lang-chip { font-family: 'DM Mono', monospace; font-size: 0.68rem; padding: 0.35rem 0.9rem; border: 1px solid var(--accent2); color: var(--accent2); border-radius: 2px; }
 
-<!-- ── INVESTMENT PORTFOLIO ── -->
-<section id="investments">
-  <h2>Investment Portfolio</h2>
-  <div id="my-portfolio"></div>
-</section>
-
-<script src="https://cdn.jsdelivr.net/gh/javl1/portfolio-widget/portfolio-widget.js"></script>
-<script>
-  PortfolioWidget.init({
-    container:   '#my-portfolio',
-    title:       'My Investment Portfolio',
-    theme:       'auto',
-    lastUpdated: '2024-06-01',
-    assets: [
-      { ticker: 'AAPL', name: 'Apple Inc.',            allocation: 35, purchaseDate: '2021-01-15', purchasePrice: 128.00, currentPrice: 213.00 },
-      { ticker: 'BTC',  name: 'Bitcoin',               allocation: 25, purchaseDate: '2020-10-01', purchasePrice: 10500,  currentPrice: 67000  },
-      { ticker: 'VTI',  name: 'Vanguard Total Market', allocation: 25, purchaseDate: '2019-03-01', purchasePrice: 144.00, currentPrice: 242.00 },
-      { ticker: 'NVDA', name: 'NVIDIA Corp.',           allocation: 10, purchaseDate: '2022-06-01', purchasePrice: 168.00, currentPrice: 875.00 },
-      { ticker: 'BOND', name: 'US Treasury ETF',        allocation:  5, purchaseDate: '2021-07-01', purchasePrice: 100.00, currentPrice:  97.00 },
-    ]
-  });
-</script>
-  
-  
   /* ── CONTACT ── */
   #contact { text-align: center; background: var(--text); max-width: 100%; padding: 7rem 2rem; }
   #contact h2 { color: #fff; }
